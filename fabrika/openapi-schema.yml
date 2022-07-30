@@ -1,0 +1,502 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /mails/:
+    get:
+      operationId: listMails
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Mail'
+          description: ''
+      tags:
+      - mails
+    post:
+      operationId: createMail
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Mail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Mail'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+          description: ''
+      tags:
+      - mails
+  /mails/{id}/:
+    get:
+      operationId: retrieveMail
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this mail.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+          description: ''
+      tags:
+      - mails
+    put:
+      operationId: updateMail
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this mail.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Mail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Mail'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+          description: ''
+      tags:
+      - mails
+    patch:
+      operationId: partialUpdateMail
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this mail.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Mail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Mail'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+          description: ''
+      tags:
+      - mails
+    delete:
+      operationId: destroyMail
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this mail.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - mails
+  /users/:
+    get:
+      operationId: listUsers
+      description: This viewset automatically provides `list` and `retrieve` actions.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+          description: ''
+      tags:
+      - users
+  /users/{id}/:
+    get:
+      operationId: retrieveUser
+      description: This viewset automatically provides `list` and `retrieve` actions.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this user.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+      tags:
+      - users
+  /clients/:
+    get:
+      operationId: listClients
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Client'
+          description: ''
+      tags:
+      - clients
+    post:
+      operationId: createClient
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Client'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+      tags:
+      - clients
+  /clients/{id}/:
+    get:
+      operationId: retrieveClient
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this client.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+      tags:
+      - clients
+    put:
+      operationId: updateClient
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this client.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Client'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+      tags:
+      - clients
+    patch:
+      operationId: partialUpdateClient
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this client.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Client'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+      tags:
+      - clients
+    delete:
+      operationId: destroyClient
+      description: 'This viewset automatically provides `list`, `create`, `retrieve`,
+
+        `update` and `destroy` actions.
+
+
+        Additionally we also provide an extra `highlight` action.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this client.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - clients
+components:
+  schemas:
+    Mail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        pub_date:
+          type: string
+          format: date-time
+        message_text:
+          type: string
+          maxLength: 200
+        code_filter:
+          type: string
+          maxLength: 200
+        tag_filter:
+          type: string
+          maxLength: 200
+        end_time:
+          type: string
+          format: date-time
+      required:
+      - pub_date
+      - message_text
+      - end_time
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+\z
+          maxLength: 150
+        mails:
+          type: array
+          items:
+            type: integer
+      required:
+      - username
+      - mails
+    Client:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phone:
+          type: integer
+        code:
+          type: integer
+        tag:
+          type: string
+          maxLength: 200
+        timezone:
+          type: integer
+      required:
+      - phone
+      - code
+      - timezone
