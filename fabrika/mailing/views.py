@@ -8,7 +8,7 @@ from rest_framework.parsers import JSONParser
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from mailing.serializers import MailSerializer,UserSerializer,ClientSerializer
+from mailing.serializers import MailSerializer,UserSerializer,ClientSerializer,MailStatSerializer
 from mailing.models import *
 from rest_framework.views import APIView
 from rest_framework import mixins
@@ -19,6 +19,11 @@ from rest_framework import permissions
 from mailing.permissions import IsOwnerOrReadOnly
 from django.contrib.auth.models import User
 from rest_framework import viewsets
+from drf_yasg.utils import swagger_auto_schema
+from .postman import *
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.settings import api_settings
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -27,54 +32,58 @@ def api_root(request, format=None):
         'mails': reverse('mail-list', request=request, format=format)
     })
 
-def index(request):
-    mail = Mail.objects.all()[0]
-    data = MailSerializer(mail)
-    content = JSONRenderer().render(data.data)
+# def index(request):
+#     mail = Mail.objects.all()[0]
+#     data = MailSerializer(mail)
+#     content = JSONRenderer().render(data.data)
 
-    return HttpResponse(content)
-
-
-class MailList(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Mail.objects.all()
-    serializer_class = MailSerializer
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+#     return HttpResponse(content)
 
 
+# class MailList(generics.ListCreateAPIView):
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     queryset = Mail.objects.all()
+#     serializer_class = MailSerializer
 
-class MailDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
-                      IsOwnerOrReadOnly]
-    queryset = Mail.objects.all()
-    serializer_class = MailSerializer
-
-class ClientList(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
+#     def perform_create(self, serializer):
+#         serializer.save(owner=self.request.user)
 
 
-class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
+
+# class MailDetail(generics.RetrieveUpdateDestroyAPIView):
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+#                       IsOwnerOrReadOnly]
+#     queryset = Mail.objects.all()
+#     serializer_class = MailSerializer
+
+# class ClientList(generics.ListCreateAPIView):
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     queryset = Client.objects.all()
+#     serializer_class = ClientSerializer
+
+
+
+
+# class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     queryset = Client.objects.all()
+#     serializer_class = ClientSerializer
 
 class MailViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
     `update` and `destroy` actions.
-
-    Additionally we also provide an extra `highlight` action.
     """
     queryset = Mail.objects.all()
     serializer_class = MailSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly]
 
+
+
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        mail = serializer.save(owner=self.request.user)
+        addMailing(mail)
 
 class ClientViewSet(viewsets.ModelViewSet):
 
@@ -82,33 +91,16 @@ class ClientViewSet(viewsets.ModelViewSet):
     This viewset automatically provides `list`, `create`, `retrieve`,
     `update` and `destroy` actions.
 
-    Additionally we also provide an extra `highlight` action.
+    hello world
     """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly]
 
+
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-
-
-
-
-
-
-
-
-
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+        serializer.save()
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -116,3 +108,18 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class MailStats(APIView):
+    @swagger_auto_schema(
+        operation_description="Get detailed stats"
+    )
+    def get(self, request, format=None):
+
+        data = {
+            "total_mails":Mail.objects.all().count(),
+            "total_messages":Message.objects.all().count(),
+            "total_send":Message.objects.filter(status="S").count(),
+            "total_failed":Message.objects.filter(status="F").count(),
+        }
+        serializer = MailStatSerializer(data)
+        return Response(serializer.data)

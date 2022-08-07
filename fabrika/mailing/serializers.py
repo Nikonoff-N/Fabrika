@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 from mailing.models import Mail,Client
+
 class MailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mail
@@ -19,3 +20,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'mails']
+
+class MailStatSerializer(serializers.Serializer):
+    total_mails = serializers.IntegerField()
+    total_messages = serializers.IntegerField()
+    total_send = serializers.IntegerField()
+    total_failed = serializers.IntegerField()

@@ -8,8 +8,9 @@ router = DefaultRouter()
 router.register(r'mails', views.MailViewSet,basename="mails")
 router.register(r'users', views.UserViewSet,basename="users")
 router.register(r'clients', views.ClientViewSet,basename="clients")
-
+#router.register(r'stats', views.MailStats, basename='stats')
 urlpatterns = [
     path('', include(router.urls)),
+    path('stats/', views.MailStats.as_view(), name="stats")
 ]
 #urlpatterns = format_suffix_patterns(urlpatterns)

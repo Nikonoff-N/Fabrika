@@ -15,8 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
-
-from django.urls import path, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from rest_framework import permissions
@@ -43,4 +41,7 @@ urlpatterns = [
     path('', include('mailing.urls')),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+]
+urlpatterns += [
+    path('django-rq/', include('django_rq.urls'))
 ]
