@@ -8,7 +8,7 @@ from rest_framework.parsers import JSONParser
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from mailing.serializers import MailSerializer,UserSerializer,ClientSerializer,MailStatSerializer
+from mailing.serializers import *
 from mailing.models import *
 from rest_framework.views import APIView
 from rest_framework import mixins
@@ -114,7 +114,6 @@ class MailStats(APIView):
         operation_description="Get detailed stats"
     )
     def get(self, request, format=None):
-
         data = {
             "total_mails":Mail.objects.all().count(),
             "total_messages":Message.objects.all().count(),
@@ -122,4 +121,18 @@ class MailStats(APIView):
             "total_failed":Message.objects.filter(status="F").count(),
         }
         serializer = MailStatSerializer(data)
+        return Response(serializer.data)
+    
+class OneMailStats(APIView):
+
+    @swagger_auto_schema(
+        operation_description="Get detailed stats for one mail"
+    )
+    def get(self, request,pk, format=None):
+        data = {
+            "total_messages":Message.objects.filter(related_mail = pk).count(),
+            "total_send":Message.objects.filter(status="S",related_mail = pk).count(),
+            "total_failed":Message.objects.filter(status="F",related_mail = pk).count(),
+        }
+        serializer = OneMailStatSerializer(data)
         return Response(serializer.data)

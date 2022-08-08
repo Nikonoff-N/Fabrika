@@ -42,6 +42,7 @@ def addMailing(mail: Mail):
         queue = get_queue('default')
         for c in clients:
             job = queue.enqueue_at(mail.pub_date, sendMailAtTime,c,mail)
+
 @job
 def sendMail(client: Client, mail: Mail):
     now = datetime.now()
@@ -67,6 +68,10 @@ def sendMail(client: Client, mail: Mail):
         message.status = "F"
         message.save()
         logger.info(f"{now} - failed with response:\n{r.status_code}\n{r.text}\n{r.url}")
+
+# def scheduleMail(client: Client, mail: Mail):
+
+
 
 def sendMailAtTime(client: Client, mail: Mail):
     now = datetime.now()

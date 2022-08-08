@@ -26,3 +26,8 @@ class MailStatSerializer(serializers.Serializer):
     total_messages = serializers.IntegerField()
     total_send = serializers.IntegerField()
     total_failed = serializers.IntegerField()
+
+class OneMailStatSerializer(serializers.Serializer):
+    total_messages = serializers.IntegerField()
+    total_send = serializers.IntegerField()
+    total_failed = serializers.IntegerField()
