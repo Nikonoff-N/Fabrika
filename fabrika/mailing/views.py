@@ -80,10 +80,15 @@ class MailViewSet(viewsets.ModelViewSet):
                           IsOwnerOrReadOnly]
 
 
-
+    def perform_update(self, serializer):
+        mail = serializer.save()
+        editMailing(mail)
+        
     def perform_create(self, serializer):
         mail = serializer.save(owner=self.request.user)
         addMailing(mail)
+    
+
 
 class ClientViewSet(viewsets.ModelViewSet):
 
